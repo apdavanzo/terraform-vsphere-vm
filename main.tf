@@ -1,85 +1,25 @@
-variable "datacenter" {
-  type = "string"
-}
+provider "vsphere" {
+  user           = "anthony@vsphere.local"
+  password       = "H4sh!corp"
+  vsphere_server = "ah-vcsa.hashicorp-success.com"
+  allow_unverified_ssl = true
+} 
 
-variable "resource_pool" {
-  type = "string"
-}
+module "virtual-machine_example_clone_linux_static" {
+  source               = "vancluever/virtual-machine/vsphere//examples/clone_linux_static"
+  version              = "1.0.1"
 
-variable "datastore" {
-  type = "string"
-}
-
-variable "network" {
-  type = "string"
-}
-
-variable "vm_name_prefix" {
-  type = "string"
-}
-
-variable "vm_count" {
-  type = "string"
-}
-
-variable "template_name" {
-  type = "string"
-}
-
-variable "linked_clone" {
-  type = "string"
-}
-
-variable "domain_name" {
-  type = "string"
-}
-
-variable "ipv4_network_address" {
-  type = "string"
-}
-
-variable "ipv4_address_start" {
-  type = "string"
-}
-
-variable "ipv4_gateway" {
-  type = "string"
-}
-
-variable "dns_servers" {
-  type = "list"
-}
-
-variable "template_os_family" {
-  default = "linux"
-}
-
-module "virtual_machines" {
-  source               = "../../"
-  datacenter           = "${var.datacenter}"
-  datastore            = "${var.datastore}"
-  dns_servers          = ["${var.dns_servers}"]
-  domain_name          = "${var.domain_name}"
-  ipv4_address_start   = "${var.ipv4_address_start}"
-  ipv4_gateway         = "${var.ipv4_gateway}"
-  ipv4_network_address = "${var.ipv4_network_address}"
-  linked_clone         = "${var.linked_clone}"
-  network              = "${var.network}"
-  resource_pool        = "${var.resource_pool}"
-  template_name        = "${var.template_name}"
-  template_os_family   = "${var.template_os_family}"
-  vm_count             = "${var.vm_count}"
-  vm_name_prefix       = "${var.vm_name_prefix}"
-}
-
-output "virtual_machine_names" {
-  value = "${module.virtual_machines.virtual_machine_names}"
-}
-
-output "virtual_machine_ids" {
-  value = "${module.virtual_machines.virtual_machine_ids}"
-}
-
-output "virtual_machine_default_ips" {
-  value = "${module.virtual_machines.virtual_machine_default_ips}"
+  datacenter           = "Datacenter"
+  datastore            = "datastore1"
+  dns_servers          = ["147.75.207.207","147.75.207.208"]
+  domain_name          = "ah-vcsa.hashicorp-success.com"
+  ipv4_address_start   = "1"
+  ipv4_gateway         = "147.75.109.17"
+  ipv4_network_address = "147.75.109.20/29"
+  linked_clone         = "false"
+  network              = "VM Network"
+  resource_pool        = "default-pool"
+  template_name        = "ubuntu"
+  vm_count             = "1"
+  vm_name_prefix       = "test"
 }
